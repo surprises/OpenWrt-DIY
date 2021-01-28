@@ -20,7 +20,7 @@ on:
     paths:
       - 'config/gdock-lean-openwrt.config'
   schedule:
-    - cron: 0 20 * * *
+    - cron: 0 4 * * 5
 #  watch:
 #    types: started
 
@@ -41,6 +41,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-18.04
+    if: github.event.repository.owner.id == github.event.sender.id
 
     steps:
     - name: Checkout
@@ -88,7 +89,7 @@ jobs:
         $GITHUB_WORKSPACE/$DIY_P2_SH
         
     - name: SSH connection to Actions
-      uses: P3TERX/ssh2actions@v1.0.0
+      uses: P3TERX/debugger-action@main
       if: env.SSH_ACTIONS == 'true' || contains(github.event.action, 'ssh')
 
     - name: Download package
@@ -116,7 +117,7 @@ jobs:
       run: df -hT
 
     - name: Upload bin directory
-      #uses: actions/upload-artifact@main
+      uses: actions/upload-artifact@main
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
       with:
         name: OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
