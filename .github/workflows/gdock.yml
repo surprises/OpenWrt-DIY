@@ -19,8 +19,8 @@ on:
       - main
     paths:
       - 'config/gdock-lean-openwrt.config'
-  schedule:
-    - cron: 0 4 * * 5
+#  schedule:
+#    - cron: 0 4 * * 5
 #  watch:
 #    types: started
 
